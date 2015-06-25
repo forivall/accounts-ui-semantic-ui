@@ -33,6 +33,15 @@ displayName = function () {
 	return '';
 };
 
+avatar = function () {
+	var user = Meteor.user();
+	if (!user) { return false; }
+
+	var steamService;
+	if (!(user.services && (steamService = user.services.steam))) { return false; }
+	return steamService.avatar && steamService.avatar.small;
+}
+
 // returns an array of the login services used by this app. each
 // element of the array is an object (eg {name: 'facebook'}), since
 // that makes it useful in combination with handlebars {{#each}}.
@@ -136,15 +145,16 @@ Template._loginButtonsLoggedIn.helpers({
 
 //
 // loginButtonsLoggedInSingleLogoutButton template
-//
+//http://localhost:3000/
 Template._loginButtonsLoggedInSingleLogoutButton.helpers({
-	displayName: displayName
+	displayName: displayName,
+	avatar: avatar
 });
 
 
 
 //
-// loginButtonsMessageMenuItem helpers 
+// loginButtonsMessageMenuItem helpers
 //
 Template._loginButtonsMessagesMenuItem.helpers({
 	hasMessages: function() {
@@ -190,7 +200,7 @@ Template._loginButtonsMessages.onRendered(function() {
 
 //
 // loginButtonsLoggingInPadding template
-// 
+//
 
 Template._loginButtonsLoggingInPadding.helpers({
 	dropdown: dropdown
